@@ -29,16 +29,6 @@ export default function Login({ navigation }) {
         <View style={styles.container}>
             <Text style={styles.logintext}>LOGIN</Text>
             <Text style={styles.mobiletext}>Enter your mobile number to proceed</Text>
-
-            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, }}>
-                <TouchableOpacity>
-                    <Gender icon={require('../../assets/icons/male.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                <Gender icon={require("../../assets/icons/female.png")} check={require("../../assets/icons/success.png")} gender={"Male"} />
-                </TouchableOpacity>
-            </View> */}
             <View style={{ width: "80%", marginTop: 40, backgroundColor: 'white', flexDirection: 'row', margin: "10%" }}>
 
                 <TextInput
@@ -56,9 +46,6 @@ export default function Login({ navigation }) {
                     placeholderTextColor="#000"
                     color={'black'}
                 />
-
-
-
             </View>
             <View>
                 <Button

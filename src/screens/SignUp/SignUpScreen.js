@@ -3,14 +3,19 @@ import {
   View,
   Button, Text,
   TextInput, TouchableOpacity,
-  StyleSheet, Image
+  StyleSheet, Image,
+  Alert,
 } from 'react-native'
 import { getStoreValue } from '../../Tools/StoreHandler'
 import { useDispatch } from 'react-redux'
 import { getItemFromStorage } from '../../utils/AccessStorage'
 import { Images } from '../../utils'
 import GenderComponent from "../../components/GenderComponent";
-import { Alert } from 'react-native'
+import CheckBox from '@react-native-community/checkbox';
+import DatePicker from 'react-native-datepicker'
+import { ScrollView } from 'react-native-gesture-handler'
+
+
 
 export default function signUp({ navigation }) {
   const dispatch = useDispatch();
@@ -21,7 +26,9 @@ export default function signUp({ navigation }) {
   const [City, setCity] = useState("")
   const [Gender, setGender] = useState("")
   const [Phone, SetPhone] = useState("")
-  const [gendercheckbox, setgendercheckbox] = useState(false)
+  const [mGenderCheckbox, setmGenderCheckbox] = useState(false)
+  const [fGenderCheckbox, setfGenderCheckbox] = useState(false)
+  const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
   React.useEffect(() => {
     // Create an scoped async function in the hook
@@ -29,7 +36,6 @@ export default function signUp({ navigation }) {
       const GetDetails = await getItemFromStorage('PhoneNumber')
       if (!GetDetails) { }
       else { SetPhone(GetDetails) }
-
     }
     // Execute the created function directly
     anyNameFunction();
@@ -43,38 +49,53 @@ export default function signUp({ navigation }) {
       "Date": Date,
       "Email": Email,
       "City": City,
-      // "gender": Gender,
+      "gender": Gender,
       "phone": Phone,
       "navigation": navigation
     }
+
+    
+
+  
     dispatch({ type: 'NEW_REGISTRATION', payload: request })
   }
 
 
   function selectGender(Status) {
-    Alert.alert(Status)
+    // Alert.alert(Status)
 
     // setGender(Status)
 
-    // if (status == "Male") {
-    //   setgendercheckbox(true)
-    //   setGender(Status)
-    // }
-    // else {
-    //   setgendercheckbox(false)
-    //   return
-    // }
+    if (Status == "Male") {
+      if (mGenderCheckbox == true) {
+        setmGenderCheckbox(false)
+        
+      } else {
+        setmGenderCheckbox(true)
+        setGender(Status)
+      }
 
-    // if (status == "Female") {
-    //   setgendercheckbox(true)
-    //   setGender(Status)
+      if (fGenderCheckbox == true) {
+        setfGenderCheckbox(false);
+      }
 
+      // setGender(Status)
+    }
 
-    // }
-    // else {
-    //   setgendercheckbox(false)
-    //   return
-    // }
+    if (Status == "Female") {
+      if (fGenderCheckbox == true) {
+        setfGenderCheckbox(false)
+      } else {
+        setfGenderCheckbox(true)
+        setGender(Status)
+      }
+
+      if (mGenderCheckbox == true) {
+        setmGenderCheckbox(false)
+      }
+
+      // setGender(Status)
+    }
 
 
   }
@@ -86,10 +107,35 @@ export default function signUp({ navigation }) {
       {/* <View style={{ flex: 0.2,alignItems:'flex-start',justifyContent:'flex-start'}}>
         <Image style={{top:0}} resizeMode="contain" source={Images["LeftDesign"]} />
       </View> */}
+      <ScrollView>
       <View style={styles.container}>
         <View style={{ textAlign: 'left' }}>
           <Text style={[styles.logintext, { color: '#000000' }]}>{toplabelmessage}</Text>
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 40 }}>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, marginBottom:30 }}>
+              {mGenderCheckbox == true ?
+                <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
+                  <GenderComponent icon={require('../../assets/icons/activeM.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
+                </TouchableOpacity>
+                :
+
+                <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
+                  <GenderComponent icon={require('../../assets/icons/male.png')} gender={"Male"} />
+                </TouchableOpacity>
+              }
+
+              {fGenderCheckbox == true ?
+                <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
+                  <GenderComponent icon={require("../../assets/icons/activeF.png")} check={require("../../assets/icons/success.png")} gender={"Female"} />
+                </TouchableOpacity>
+                :
+
+                <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
+                  <GenderComponent icon={require("../../assets/icons/female.png")} gender={"Female"} />
+                </TouchableOpacity>
+              }
+            </View>
             <TextInput
               style={styles.input}
               placeholder='Name'
@@ -97,17 +143,49 @@ export default function signUp({ navigation }) {
               fontSize={18}
               backgroundColor='white'
               placeholderTextColor="#AFAFAF"
+               autoCapitalize="none"
               onChangeText={(mobile) => setName(mobile)}
             />
-            <TextInput
+            <DatePicker
               style={styles.input}
               placeholder='DOB'
+              date={Date}
+              mode="date"
+              format="YYYY-MM-DD"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              disabled={false}
+             
               autoCapitalize="none"
               fontSize={18}
-              backgroundColor='white'
-              placeholderTextColor="#AFAFAF"
-              onChangeText={(mobile) => setDate(mobile)}
+              customStyles={{
+                dateIcon: {
+                  position: 'relative',
+                  marginLeft: 0,
+                  marginBottom:18
+                },
+                dateInput: {
+                  marginEnd:200,
+                  borderWidth: 0,
+                  fontSize:18,
+                  // alignItems: 'center',
+                  marginBottom:18
+                },
+                placeholderText: {
+                  fontSize: 17,
+                  color: "#AFAFAF",
+                  marginStart:-50
+                  // marginLeft:100,
+                  
+                },
+              }}
+              onDateChange={(mobile) => setDate(mobile)}
+              // onChangeText={(mobile) => setDate(mobile)}
             />
+                
+  
+   
+      
             <TextInput
               style={styles.input}
               placeholder='Email Address'
@@ -126,48 +204,23 @@ export default function signUp({ navigation }) {
               placeholderTextColor="#AFAFAF"
               onChangeText={(mobile) => setCity(mobile)}
             />
-            {/* <View style={{
-              flexDirection: 'row', marginTop: 10, padding: 5,
-              marginLeft: 15,
-            }}>
-              <Text style={{ textAlign: 'center', paddingTop: 5 }}>Gender</Text>
-              <TouchableOpacity style={{ backgroundColor: "#d2d2d2", width: 50, marginLeft: 20, borderRadius: 3 }}
-              >
-                <Text style={styles.buttongender}>Male</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ backgroundColor: "#d2d2d2", marginLeft: 10, width: 50, borderRadius: 3 }}
-                onPress={selectGender.bind(this, "Female")}
-              >
-                <Text style={styles.buttongender}>Female</Text>
-              </TouchableOpacity>
+            
 
-            </View> */}
-
-
-
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, }}>
-              <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
-                
-                <GenderComponent icon={require('../../assets/icons/male.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
-                <GenderComponent icon={require("../../assets/icons/female.png")} check={require("../../assets/icons/success.png")} gender={"Female"} />
-              </TouchableOpacity>
+            <View style={styles.checkboxView}>
+              <CheckBox style = {{height:20 , marginLeft:10 }}
+                 tintColor={'white'}
+                height={"70"}
+                disabled={false}
+                value={toggleCheckBox}
+                boxType= "square"
+                onValueChange={(newValue) => setToggleCheckBox(newValue)}
+              />
+              <Text style = {{color:'#FFFAE8'}}>I agree to the</Text>
+              <Text style = {{color:'#0190DB'}}> Terms & conditions</Text>
+              <Text style = {{color:'#FFFAE8'}}> and</Text>
+              <Text style = {{color:'#0190DB'}}> Privacy Policy</Text>
             </View>
 
-
-
-            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, }}>
-              <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
-                <GenderComponent icon={require('../../assets/icons/male.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
-                <GenderComponent icon={require("../../assets/icons/female.png")} check={require("../../assets/icons/success.png")} gender={"Female"} />
-              </TouchableOpacity>
-            </View> */}
 
             <TouchableOpacity style={styles.loginBtn} onPress={() => _signUp()}>
               <Text style={styles.buttontext}>Create Account</Text>
@@ -176,9 +229,7 @@ export default function signUp({ navigation }) {
         </View>
 
       </View>
-      {/* <View style={{ flex: 0.3,alignItems:'flex-end',justifyContent:'flex-end' }}>
-        <Image style={{bottom:0}} resizeMode="contain" source={Images["RightDesign"]} />
-      </View> */}
+      </ScrollView>
     </View>
   )
 }
@@ -202,7 +253,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#d9d9d9",
     borderWidth: 0,
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor:'white',
+    
   },
   logintext: {
     padding: 5,
@@ -239,6 +292,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     // fontWeight: 'bold'
   },
+  checkboxView: {
+
+    flexDirection: 'row',
+    height: 100,
+    marginTop:30
+
+
+  }
   // buttongender: {
   //   color: '#fff',
   //   // padding:20,

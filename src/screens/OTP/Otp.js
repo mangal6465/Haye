@@ -17,10 +17,10 @@ import { navigate, navigateScreen } from '../../Tools/NavigationServices'
 import { set } from "react-native-reanimated";
 
 
+
 export default function Otp({ navigation }) {
     const dispatch = useDispatch();
     const getLogin = getStoreValue('SignIn');
-
     const [modalVisible, setModalVisible] = useState(false);
     const getPhoneNumber = getLogin["Login"]["phone"];
     const [mobile, setMobile] = useState(getPhoneNumber);
@@ -77,7 +77,7 @@ export default function Otp({ navigation }) {
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                     style={styles.TextInput}
                     pinCount={6}
-                    // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                    // code={"123456"} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                     onCodeChanged={otp => { setOtp({ otp }) }}
                     onCodeFilled={(otp => {
                         { setOtp({ otp }) }

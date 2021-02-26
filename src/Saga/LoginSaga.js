@@ -12,8 +12,8 @@ export function* SignInSaga(action) {
   
   let params = {}
   // api.setHeader('Content-Type', 'application/x-www-form-urlencoded')
-    // params["phone"] = action.payload;
-    // params["token"] = "23232323";
+    params["phone"] = action.payload;
+    params["token"] = "23232323";
     navigate('SignUpScreen')
   
   // const response = yield call(api.user_login, params)
