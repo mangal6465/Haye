@@ -1,4 +1,5 @@
 import apisauce from 'apisauce'
+import { Alert } from 'react-native';
 const applicationJson = 'application/json';
 
 const create = (baseURL = 'https://www.haye.in/haye3010/service/') => {
@@ -33,8 +34,16 @@ const create = (baseURL = 'https://www.haye.in/haye3010/service/') => {
         otpverifiydata.append('otp', params.otp)
         return api.post('userloginverifyotp', otpverifiydata)}
 
-    const user_profile_update = (params) => api.post('user_profile_update', params)
+    const user_profile_update = (params) => {
+        const signupdata = new FormData();
+        signupdata.append("name",params.full_name)
+        signupdata.append("phone",params.phone)
+        signupdata.append("email",params.email)
+        signupdata.append("gender",params.gender)
+        signupdata.append("dob",params.dob)
+        return api.post('register', signupdata)}
 
+    const City_name = (params) => api.post('getCities', params)
 
 
     return {
@@ -43,7 +52,8 @@ const create = (baseURL = 'https://www.haye.in/haye3010/service/') => {
         deleteHeader,
         user_login,
         user_login_otp_verify,
-        user_profile_update
+        user_profile_update,
+        City_name,
     }
 }
 

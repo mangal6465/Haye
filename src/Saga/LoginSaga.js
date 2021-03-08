@@ -14,7 +14,7 @@ export function* SignInSaga(action) {
   // api.setHeader('Content-Type', 'application/x-www-form-urlencoded')
     params["phone"] = action.payload;
     params["token"] = "23232323";
-    navigate('SignUpScreen')
+    navigate('Language')
   
   // const response = yield call(api.user_login, params)
   // if (response.status == 200) {
@@ -48,6 +48,7 @@ export function* OTPSaga(action) {
   if (response.status == 200) {
     if (response.data["user"] == "Registered User") {
       if (response.data.data["name"] == "") {
+         saveToStorage("PhoneNumber", phone)
         navigateScreen(navigation, 'SignUpScreen')
       }
       else {
@@ -71,23 +72,45 @@ export function* OTPSaga(action) {
 export function* Registration(action) {
   let params = {}
   const { Name, Date, Email, City, gender, navigation, phone } = action.payload
-  api.setContentType(api.applicationJson)
+
+  // api.setContentType(api.applicationJson)
   params["phone"] = phone;
   params["full_name"] = Name;
   params["email"] = Email;
   params["dob"] = Date;
-  params["city"] = City;
+  params["city_id"] = City;
   params["gender"] = gender;
   params["devicetoken"] = "34567890";
   const response = yield call(api.user_profile_update, params)
-  debugger
+ 
   if (response.status == 200) {
-    if (response.data["statusCode"] == "SUCCESS") {
+    if (response.data["status"] == "1") {
+      
       navigateScreen(navigation, 'HomeScreen')
       saveToStorage("User_info", JSON.stringify(response.data))
       yield put({
         type: 'USER_INFORMATION',
         payload: response.data
+      })
+    }
+    else {
+      alert(response.data.message)
+    }
+  }
+}
+
+export function* cityList(action) {
+  debugger
+  const response = yield call(api.City_name) 
+  api.setContentType(api.applicationJson)
+
+  if (response.data.message == "success") {
+    if (response.data.message == "success") {
+   
+      saveToStorage("User_info", JSON.stringify(response.data.data))
+      yield put({
+        type: 'USER_INFORMATION',
+        payload: response.data.data
       })
     }
     else {

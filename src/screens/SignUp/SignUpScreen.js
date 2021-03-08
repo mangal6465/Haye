@@ -3,7 +3,7 @@ import {
   View,
   Button, Text,
   TextInput, TouchableOpacity,
-  StyleSheet, Image,
+  StyleSheet, Image, Animated,
   Alert,
 } from 'react-native'
 import { getStoreValue } from '../../Tools/StoreHandler'
@@ -14,6 +14,11 @@ import GenderComponent from "../../components/GenderComponent";
 import CheckBox from '@react-native-community/checkbox';
 import DatePicker from 'react-native-datepicker'
 import { ScrollView } from 'react-native-gesture-handler'
+import DropDownPicker from 'react-native-dropdown-picker';
+import { cityList } from '../../Saga/LoginSaga'
+
+
+
 
 
 
@@ -36,6 +41,10 @@ export default function signUp({ navigation }) {
       const GetDetails = await getItemFromStorage('PhoneNumber')
       if (!GetDetails) { }
       else { SetPhone(GetDetails) }
+
+      // const cities = await cityList(null)
+      // console.log(cities)
+      // dispatch({ type: 'City', payload: request })
     }
     // Execute the created function directly
     anyNameFunction();
@@ -54,9 +63,9 @@ export default function signUp({ navigation }) {
       "navigation": navigation
     }
 
-    
 
-  
+
+    // dispatch({ type: 'City_name' })
     dispatch({ type: 'NEW_REGISTRATION', payload: request })
   }
 
@@ -69,7 +78,7 @@ export default function signUp({ navigation }) {
     if (Status == "Male") {
       if (mGenderCheckbox == true) {
         setmGenderCheckbox(false)
-        
+
       } else {
         setmGenderCheckbox(true)
         setGender(Status)
@@ -108,127 +117,143 @@ export default function signUp({ navigation }) {
         <Image style={{top:0}} resizeMode="contain" source={Images["LeftDesign"]} />
       </View> */}
       <ScrollView>
-      <View style={styles.container}>
-        <View style={{ textAlign: 'left' }}>
-          <Text style={[styles.logintext, { color: '#000000' }]}>{toplabelmessage}</Text>
-          <View style={{ marginTop: 40 }}>
+        <View style={styles.container}>
+          <View style={{ textAlign: 'left' }}>
+            <Text style={[styles.logintext, { color: '#000000' }]}>{toplabelmessage}</Text>
+            <View style={{ marginTop: 40 }}>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, marginBottom:30 }}>
-              {mGenderCheckbox == true ?
-                <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
-                  <GenderComponent icon={require('../../assets/icons/activeM.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
-                </TouchableOpacity>
-                :
+              <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingLeft: 20, paddingRight: 20, marginBottom: 30 }}>
+                {mGenderCheckbox == true ?
+                  <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
+                    <GenderComponent icon={require('../../assets/icons/activeM.png')} check={require('../../assets/icons/success.png')} gender={"Male"} />
+                  </TouchableOpacity>
+                  :
 
-                <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
-                  <GenderComponent icon={require('../../assets/icons/male.png')} gender={"Male"} />
-                </TouchableOpacity>
-              }
+                  <TouchableOpacity onPress={selectGender.bind(this, "Male")}>
+                    <GenderComponent icon={require('../../assets/icons/male.png')} gender={"Male"} />
+                  </TouchableOpacity>
+                }
 
-              {fGenderCheckbox == true ?
-                <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
-                  <GenderComponent icon={require("../../assets/icons/activeF.png")} check={require("../../assets/icons/success.png")} gender={"Female"} />
-                </TouchableOpacity>
-                :
+                {fGenderCheckbox == true ?
+                  <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
+                    <GenderComponent icon={require("../../assets/icons/activeF.png")} check={require("../../assets/icons/success.png")} gender={"Female"} />
+                  </TouchableOpacity>
+                  :
 
-                <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
-                  <GenderComponent icon={require("../../assets/icons/female.png")} gender={"Female"} />
-                </TouchableOpacity>
-              }
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder='Name'
-              autoCapitalize="none"
-              fontSize={18}
-              backgroundColor='white'
-              placeholderTextColor="#AFAFAF"
-               autoCapitalize="none"
-              onChangeText={(mobile) => setName(mobile)}
-            />
-            <DatePicker
-              style={styles.input}
-              placeholder='DOB'
-              date={Date}
-              mode="date"
-              format="YYYY-MM-DD"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              disabled={false}
-             
-              autoCapitalize="none"
-              fontSize={18}
-              customStyles={{
-                dateIcon: {
-                  position: 'relative',
-                  marginLeft: 0,
-                  marginBottom:18
-                },
-                dateInput: {
-                  marginEnd:200,
-                  borderWidth: 0,
-                  fontSize:18,
-                  // alignItems: 'center',
-                  marginBottom:18
-                },
-                placeholderText: {
-                  fontSize: 17,
-                  color: "#AFAFAF",
-                  marginStart:-50
-                  // marginLeft:100,
-                  
-                },
-              }}
-              onDateChange={(mobile) => setDate(mobile)}
-              // onChangeText={(mobile) => setDate(mobile)}
-            />
-                
-  
-   
-      
-            <TextInput
-              style={styles.input}
-              placeholder='Email Address'
-              autoCapitalize="none"
-              fontSize={18}
-              backgroundColor='white'
-              placeholderTextColor="#AFAFAF"
-              onChangeText={(mobile) => setEmail(mobile)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder='City'
-              autoCapitalize="none"
-              fontSize={18}
-              backgroundColor='white'
-              placeholderTextColor="#AFAFAF"
-              onChangeText={(mobile) => setCity(mobile)}
-            />
-            
-
-            <View style={styles.checkboxView}>
-              <CheckBox style = {{height:20 , marginLeft:10 }}
-                 tintColor={'white'}
-                height={"70"}
-                disabled={false}
-                value={toggleCheckBox}
-                boxType= "square"
-                onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                  <TouchableOpacity onPress={selectGender.bind(this, "Female")}>
+                    <GenderComponent icon={require("../../assets/icons/female.png")} gender={"Female"} />
+                  </TouchableOpacity>
+                }
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder='Name'
+                autoCapitalize="none"
+                fontSize={18}
+                backgroundColor='white'
+                placeholderTextColor="#AFAFAF"
+                autoCapitalize="none"
+                onChangeText={(mobile) => setName(mobile)}
               />
-              <Text style = {{color:'#FFFAE8'}}>I agree to the</Text>
-              <Text style = {{color:'#0190DB'}}> Terms & conditions</Text>
-              <Text style = {{color:'#FFFAE8'}}> and</Text>
-              <Text style = {{color:'#0190DB'}}> Privacy Policy</Text>
+              <DatePicker
+                style={styles.input}
+                placeholder='DOB'
+                date={Date}
+                mode="date"
+                format="YYYY-MM-DD"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                disabled={false}
+
+                autoCapitalize="none"
+                fontSize={18}
+                customStyles={{
+                  dateIcon: {
+                    position: 'relative',
+                    marginLeft: 0,
+                    marginBottom: 18
+                  },
+                  dateInput: {
+                    marginEnd: 200,
+                    borderWidth: 0,
+                    fontSize: 18,
+                    // alignItems: 'center',
+                    marginBottom: 18
+                  },
+                  placeholderText: {
+                    fontSize: 17,
+                    color: "#AFAFAF",
+                    marginStart: -50
+                    // marginLeft:100,
+
+                  },
+                }}
+                onDateChange={(mobile) => setDate(mobile)}
+              // onChangeText={(mobile) => setDate(mobile)}
+              />
+
+
+
+
+              <TextInput
+                style={styles.input}
+                placeholder='Email Address'
+                autoCapitalize="none"
+                fontSize={18}
+                backgroundColor='white'
+                placeholderTextColor="#AFAFAF"
+                onChangeText={(mobile) => setEmail(mobile)}
+              />
+              <DropDownPicker
+                items={[
+                  { label: 'Warangal', value: 'Warangal' },
+                  { label: 'Coimbatore', value: 'Coimbatore' },
+                  { label: 'Hyderabad', value: 'Hyderabad' },
+                  { label: 'Pollachi', value: 'Pollachi' },
+                  { label: 'R kothagudem', value: 'R kothagudem' },
+                  { label: 'Trichy', value: 'Trichy' },
+                ]}
+                // defaultValue={this.state.country}
+                containerStyle={{
+                  height: 65, borderWidth: 0,
+                  borderRadius: 10,
+                }}
+                // style={{backgroundColor: '#fafafa'}}
+                style={styles.input}
+                itemStyle={{
+                  justifyContent: 'flex-start'
+                }}
+                placeholder='City'
+                dropDownStyle={{ backgroundColor: '#fafafa' }}
+                // onChangeItem={item => this.setState({
+                //     country: item.value
+                // })}
+                onChangeItem={(item) => setCity(item.value)}
+              />
+
+              <View style={styles.checkboxView}>
+                <CheckBox style={{ height: 20, marginLeft: 10 }}
+                  tintColor={'white'}
+                  height={"70"}
+                  disabled={false}
+                  value={toggleCheckBox}
+                  boxType="square"
+                  onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                />
+                <Text style={{ color: '#FFFAE8' }}>I agree to the</Text>
+                <Text style={{ color: '#0190DB' }}> Terms & conditions</Text>
+                <Text style={{ color: '#FFFAE8' }}> and</Text>
+                <Text style={{ color: '#0190DB' }}> Privacy Policy</Text>
+              </View>
+
+
+              <TouchableOpacity style={styles.loginBtn} onPress={() => _signUp()}>
+                <Text style={styles.buttontext}>Create Account</Text>
+              </TouchableOpacity>
             </View>
-
-
-            <TouchableOpacity style={styles.loginBtn} onPress={() => _signUp()}>
-              <Text style={styles.buttontext}>Create Account</Text>
-            </TouchableOpacity>
           </View>
-        </View>
 
-      </View>
+        </View>
       </ScrollView>
     </View>
   )
@@ -254,8 +279,8 @@ const styles = StyleSheet.create({
     borderColor: "#d9d9d9",
     borderWidth: 0,
     borderRadius: 10,
-    backgroundColor:'white',
-    
+    backgroundColor: 'white',
+
   },
   logintext: {
     padding: 5,
@@ -296,7 +321,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     height: 100,
-    marginTop:30
+    marginTop: 30
 
 
   }

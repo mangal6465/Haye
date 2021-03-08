@@ -23,6 +23,7 @@ export default function Otp({ navigation }) {
     const getLogin = getStoreValue('SignIn');
     const [modalVisible, setModalVisible] = useState(false);
     const getPhoneNumber = getLogin["Login"]["phone"];
+    const getOtp = getLogin["Login"]["login_otp"];
     const [mobile, setMobile] = useState(getPhoneNumber);
     const [otp, setOtp] = useState("");
 
@@ -77,12 +78,14 @@ export default function Otp({ navigation }) {
                     codeInputHighlightStyle={styles.underlineStyleHighLighted}
                     style={styles.TextInput}
                     pinCount={6}
-                    // code={"123456"} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                    // code={getOtp} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                     onCodeChanged={otp => { setOtp({ otp }) }}
                     onCodeFilled={(otp => {
                         { setOtp({ otp }) }
                     })
                     }
+
+                   
                 />
 
             </View>

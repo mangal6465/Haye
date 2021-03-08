@@ -10,6 +10,9 @@ import HomeScreen from '../screens/Home/Home';
 import RaidingScreen from '../screens/Raiding/RaidingScreen'
 import PaymentScreen from '../screens/Payment/Payment'
 
+import Language from '../screens/Language/Language';
+
+
 
 const RootStack = createStackNavigator();
 
@@ -31,19 +34,20 @@ const RootStackScreen = ({ navigation }) => {
 
     return (
         <RootStack.Navigator>
-            {LoginStatus == "" &&
+            {/* {LoginStatus == "" && */}
                 <>
                 {/* <RootStack.Screen name="SignUpScreen" component={SignUpScreen} /> */}
                     <RootStack.Screen name="LoginScreen" component={LoginScreen}  options={{ headerShown: true ,title:"Login"  }}/>
                     <RootStack.Screen name="Otp" component={OTPScreen} options={{ headerShown: true , title:"Verification" }} />
                     <RootStack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: true , title:"Registartion" }} />
                 </>
-            }
+            {/* } */}
             <RootStack.Screen name="HomeScreen" component={HomeScreen} />
             <RootStack.Screen name="RaidingScreen" component={RaidingScreen} />
             <RootStack.Screen name="PaymentScreen" component={PaymentScreen} />
 
             <RootStack.Screen name="SplashScreen" component={SplashScreen} />
+            <RootStack.Screen name="Language" component={Language} />
             {/* <RootStack.Screen name="SignInScreen" component={SignInScreen} /> */}
             {/* <RootStack.Screen name="VerificationScreen" component={VerificationScreen}/> */}
 

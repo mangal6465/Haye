@@ -13,11 +13,11 @@ import {
 import { themes } from '../../utils'
 import { useDispatch } from 'react-redux'
 import { Button, Popup, Input } from '../../components'
-// import Gender from "../../components/Gender";
+import InputCircle from "../../components/InputCircle";
 import Appicon from "../../components/Appicon";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-export default function Login({ navigation }) {
+export default function Language({ navigation }) {
     const dispatch = useDispatch()
     const [mobile, setMobile] = useState("");
     const [check, setCheck] = useState(false);
@@ -35,43 +35,18 @@ export default function Login({ navigation }) {
          
         
         <View style={styles.container}>
-          <ScrollView >
-            <View style = {{flex:1, height:"45%",backgroundColor:'#FDE8A5' , marginTop:0 , alignContent:'center' , alignItems:'center' , justifyContent:'center' , marginBottom:40}}>
-            {/* <GenderComponent icon={require('../../assets/icons/activeM.png')} /> */}
-            <Appicon icon={require("../../assets/icons/HayeLOGO.png")}/>
-            </View>
-            <Text style={styles.logintext}>LOGIN</Text>
-            <Text style={styles.mobiletext}>Enter your mobile number to proceed</Text>
-           
-            <View style={{flex:1,  width: "80%", marginTop: 10, backgroundColor: '#fff', flexDirection: 'row', margin: "10%" , height:"10%" }}>
-      
-                <TextInput
-                    style={styles.counterytext}
-                    // onChangeText={text => onChangeText(text)}
-                    placeholder={"+91"}
-                    placeholderTextColor="#000"
-                    editable={false}
-
-                />
-                <TextInput
-                    style={styles.inputtext}
-                    onChangeText={(mobile) => setMobile(mobile)}
-                    placeholder={"Enter mobile number "}
-                    paddingHorizontal={10}
-                    keyboardType={'number-pad'}
-                    placeholderTextColor="#000"
-                    color={'black'}
-                    returnKeyType='done'
-                />
-             
-            </View>
+  
+     
+            <InputCircle/>
+  
+        
             
             <View style = {{flex:1, marginBottom:"30%" }}>
                 <Button
                     title={'Continue'}
                     onPress={Signin} />
             </View>
-            </ScrollView>
+         
         </View>
 
    
